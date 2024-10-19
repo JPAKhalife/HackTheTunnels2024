@@ -2,6 +2,7 @@ import { Timetable } from "@prisma/client";
 import { prisma } from "../db";
 import { Result, Ok, Err } from "ts-results";
 import { AccountService } from ".";
+import { ScheduledEvent } from "@prisma/client";
 
 export const createTimetable = async (
   email: string,
@@ -12,6 +13,52 @@ export const createTimetable = async (
 
   if (account === null) {
     return Err(new Error("Account not found"));
+  }
+
+  const events = await prisma.scheduledEvent.findMany({
+    where: {
+      id: {
+        in: scheduledEventIds.map((id) => parseInt(id)),
+      },
+    },
+  });
+  const checkForOverlaps = (events: ScheduledEvent[]): boolean => {
+    const daysMap: { [key: string]: ScheduledEvent[] } = {};
+  
+    // Populate daysMap with events
+    events.forEach(event => {
+      event.days.split(',').forEach(day => {
+        if (!daysMap[day]) daysMap[day] = [];
+        daysMap[day].push(event);
+      });
+    });
+
+    // Check for overlaps in each day
+    for (const day in daysMap) {
+      const dayEvents = daysMap[day];
+      for (let i = 0; i < dayEvents.length; i++) {
+        for (let j = i + 1; j < dayEvents.length; j++) {
+          if (timesOverlap(dayEvents[i], dayEvents[j])) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  };
+  const timesOverlap =
+    (event1: ScheduledEvent, event2: ScheduledEvent): boolean => {
+
+    const start1 = new Date(`1970-01-01T${event1.startTime}:00`);
+    const end1 = new Date(`1970-01-01T${event1.endTime}:00`);
+    const start2 = new Date(`1970-01-01T${event2.startTime}:00`);
+    const end2 = new Date(`1970-01-01T${event2.endTime}:00`);
+  
+    return (start1 < end2 && start2 < end1);
+  };
+
+  if (checkForOverlaps(events)) {
+    return Err(new Error("Course times overlap"));
   }
 
   const timetable = await prisma.timetable.create({

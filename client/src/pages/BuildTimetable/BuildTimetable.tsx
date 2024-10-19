@@ -49,12 +49,12 @@ function BuildTimetable() {
   return (
     <Layout title={"My Course Worksheet"}>
       <div>
-          <input
-            type="text"
-            value={timetableName}
-            onChange={handleNameChange}
-            placeholder="Enter timetable name"
-          />
+        <input
+          type="text"
+          value={timetableName}
+          onChange={handleNameChange}
+          placeholder="Enter timetable name"
+        />
       </div>
       <div className="BuildTimetable">
         <Section title="Search">
