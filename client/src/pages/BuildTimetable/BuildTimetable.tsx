@@ -13,6 +13,7 @@ import { scheduledEventToCalendarBlock } from "@/utils";
 import "./BuildTimetable.style.scss";
 
 function BuildTimetable() {
+  const [timetableName, setTimetableName] = useState('');
   const { jwt } = useAccountContext();
   const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
   const [selectedEvents, setSelectedEvents] = useState<ScheduledEvent[]>([]);
@@ -23,9 +24,13 @@ function BuildTimetable() {
     setScheduledEvents(result);
   };
 
+  const handleNameChange = (event) => {
+    setTimetableName(event.target.value);
+  };
+
   const createTimetable = async () => {
     const result = await ServiceAPI.createTimetable(
-      new Date().toISOString(),
+      timetableName,
       selectedEvents.map((event) => event.id.toString()),
       jwt,
     );
@@ -43,6 +48,14 @@ function BuildTimetable() {
 
   return (
     <Layout title={"My Course Worksheet"}>
+      <div>
+          <input
+            type="text"
+            value={timetableName}
+            onChange={handleNameChange}
+            placeholder="Enter timetable name"
+          />
+      </div>
       <div className="BuildTimetable">
         <Section title="Search">
           <SearchSection onSearch={fetchScheduledEvents} />
