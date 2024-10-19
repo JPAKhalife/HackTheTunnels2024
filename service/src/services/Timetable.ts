@@ -7,6 +7,34 @@ import dotenv from 'dotenv';
 dotenv.config()
 import { ScheduledEvent } from "@prisma/client";
 
+
+import fetch from 'node-fetch'; // Use `import` if you're in a module, or `require` if not
+
+const sendDiscordWebhook = async (webhookUrl: string, message: string) => {
+  
+  const payload = {
+    content: message,
+  };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to send message: ${response.statusText}`);
+    }
+
+    console.log('Message sent successfully.');
+  } catch (error) {
+    console.error('Error sending message:', error);
+  }
+};
+
 export const createTimetable = async (
   email: string,
   name: string,
@@ -17,6 +45,8 @@ export const createTimetable = async (
   if (account === null) {
     return Err(new Error("Account not found"));
   }
+
+  
 
   const events = await prisma.scheduledEvent.findMany({
     where: {
@@ -107,6 +137,13 @@ export const createTimetable = async (
     console.log('Email sent successfully.');
   } catch (error) {
     console.error('Error sending email:', error);
+  }
+
+  try {
+    sendDiscordWebhook(process.env.WEBHOOK, '@everyone A timetable was created!');
+    console.log("successfully sent a webhook!")
+  } catch (error) {
+    console.error('error sending webhook', error)
   }
 
   return Ok(timetable);
