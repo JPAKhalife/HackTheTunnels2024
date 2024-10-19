@@ -17,18 +17,20 @@
   -webkit-background-size: cover;
   background-image: url("/hogwarts.png");
   font-size: 0.9em;
+  display: flex;
 
   &__panel {
-    width: 31.25rem;
-    height: 100vh;
+    width: 30%;
+    height: 100%;
     background-color: white;
     position: fixed;
     top: 0;
     left: 0;
+    overflow-y:scroll;
 
     img {
       padding-top: 5.625rem;
-      max-width: 100%;
+      max-width: 70%;
       margin-bottom: 3.75rem;
     }
 
@@ -40,7 +42,7 @@
     #description {
       color:black;
       font-family: 'harrypotter';
-      font-size: 20px;
+      font-size: 3vh;
     }
 
     &__button {
@@ -113,7 +115,7 @@ $dark: #FFFFFF;
 $borderW: 2px;
 
 .blob-btn {
-  margin-top: 50px;
+  
   text-align: center;
   border-radius:30px;
   $numOfBlobs: 4;
@@ -130,6 +132,7 @@ $borderW: 2px;
   outline: none;
   border: none;
   transition: color 0.5s;
+  height: auto;
   cursor: pointer;
   border-radius:30px;
   

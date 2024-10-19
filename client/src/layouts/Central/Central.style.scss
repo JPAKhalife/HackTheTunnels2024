@@ -1,3 +1,16 @@
+@font-face {
+  font-family: 'harrypotter';
+  src: url(/HARRYP__.TTF);
+}
+@font-face {
+  font-family: 'magic';
+  src: url(/SEVESBRG.TTF);
+}
+@font-face {
+  font-family: 'gothic';
+  src: url(/SEVESBRG.TTF);
+}
+
 .Central {
   &__page {
     height: 100vh;
@@ -14,16 +27,23 @@
       margin-top: 1.67rem;
       margin-bottom: 1.5rem;
       font-weight: normal;
-      font-size: 1.3em;
+      font-size: 2em;
+      font-family: 'gothic';
     }
 
     &__footer {
       font-weight: bold;
       font-size: 80%;
-      text-align: left;
+      text-align: center;
+      font-family: 'magic' ;
+      margin-top: 1.67rem;
+      border-style:groove;
+      border-width: 5px;
+      border-color: black;
 
       &__release {
         text-transform: uppercase;
+        text-align: center;
       }
 
       &__copyright {
