@@ -2,6 +2,9 @@ import { Timetable } from "@prisma/client";
 import { prisma } from "../db";
 import { Result, Ok, Err } from "ts-results";
 import { AccountService } from ".";
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config()
 import { ScheduledEvent } from "@prisma/client";
 
 export const createTimetable = async (
@@ -80,6 +83,31 @@ export const createTimetable = async (
       },
     },
   });
+
+  // Send an email notification using nodemailer
+  const transporter = nodemailer.createTransport({
+    service: 'gmail', // You can use other services like SendGrid, Outlook, etc.
+    auth: {
+      user: process.env.EMAIL, // Replace with your email
+      pass: process.env.PASS,  // Replace with your email password
+    },
+  });
+
+  // Construct the email content
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: email, // Send to the user's email
+    subject: 'Timetable Created',
+    text: `Dear ${email},\n\nYour new timetable "${name}" has been successfully created.\n\nBest regards,\nYour Hogwarts Team`
+  };
+
+  // Send the email and handle any errors
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully.');
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
 
   return Ok(timetable);
 };
