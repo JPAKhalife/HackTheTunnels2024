@@ -1,0 +1,36 @@
+@font-face {
+    font-family: "scary";
+    src: url('/MagicSchoolTwo.ttf');
+  }
+
+@font-face {
+    font-family: "b";
+    src: url('/SEVESBRG.TTF');
+  }
+
+  @font-face {
+    font-family: "h";
+    src: url('/HARRYP__.TTF');
+  }
+
+#title {
+    text-align: center;
+    font-family: 'scary';
+}
+
+#nf {
+    font-family: 'h';
+}
+
+#chamber {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    padding-top: 5%;
+}
+
+#text {
+    text-align: center;
+    font-family: 'b';
+}
