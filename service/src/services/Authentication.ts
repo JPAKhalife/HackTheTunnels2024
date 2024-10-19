@@ -10,11 +10,11 @@ export const login = async (
   const account = await AccountService.findByEmail(email);
 
   if (account === null) {
-    return Err(new Error("Account not found"));
+    return Err(new Error("Account not found. You clearly are a Muggle."));
   }
 
   if (password !== account.password) {
-    return Err(new Error("Incorrect password"));
+    return Err(new Error("Incorrect password. Are you sure you didn't enroll at Beauxbatons?"));
   }
 
   const secret = JWT_SECRET;
